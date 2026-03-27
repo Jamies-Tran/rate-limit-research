@@ -1,4 +1,4 @@
-package com.example.ratelimit.infrastructure.persistence.adapter;
+package com.example.ratelimit.infrastructure.persistence.adapter.cache.l1;
 
 import com.example.ratelimit.domain.repository.cache.l1.RateLimiterLocalRepository;
 import com.github.benmanes.caffeine.cache.Cache;

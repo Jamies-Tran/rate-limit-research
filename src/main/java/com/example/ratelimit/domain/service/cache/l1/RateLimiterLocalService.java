@@ -1,5 +1,7 @@
 package com.example.ratelimit.domain.service.cache.l1;
 
 public interface RateLimiterLocalService {
-    void consume(String key);
+    Boolean allow(String key);
+
+    void reset(String key);
 }

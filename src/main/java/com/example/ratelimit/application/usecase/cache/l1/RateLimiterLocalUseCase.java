@@ -1,0 +1,43 @@
+package com.example.ratelimit.application.usecase.cache.l1;
+
+import com.example.ratelimit.domain.entity.cache.l1.RateLimiterProperty;
+import com.example.ratelimit.domain.repository.cache.l1.RateLimiterLocalRepository;
+import com.example.ratelimit.domain.service.cache.l1.RateLimiterLocalService;
+import com.example.ratelimit.infrastructure.env.AppEnvironment;
+import io.github.resilience4j.ratelimiter.RateLimiter;
+import io.github.resilience4j.ratelimiter.RateLimiterConfig;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class RateLimiterLocalUseCase implements RateLimiterLocalService {
+    RateLimiterLocalRepository repository;
+
+
+    @Override
+    public Boolean allow(String key) {
+
+        Optional<RateLimiter> rateLimiter = repository.findByKey(key);
+        if (rateLimiter.isEmpty()) {
+            repository.save(key, RateLimiter.of(key, rateLimiterConfig()));
+            return false;
+        }
+
+        return rateLimiter.get().acquirePermission();
+    }
+
+    @Override
+    public void reset(String key) {
+        repository.save(key, RateLimiter.of(key, rateLimiterConfig()));
+    }
+
+    private RateLimiterConfig rateLimiterConfig() {
+        return RateLimiterProperty.ofDefault().config();
+    }
+}
