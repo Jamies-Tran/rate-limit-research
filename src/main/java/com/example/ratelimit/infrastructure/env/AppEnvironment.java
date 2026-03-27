@@ -16,12 +16,12 @@ public class AppEnvironment {
 
     public static Integer tokenRefillRate;
 
-    @Value("${environment.rate-limit.local.limit-period:5}")
+    @Value("${environment.rate-limit.local.limit-period:1}")
     public void setLimitForPeriod(Integer limitForPeriod) {
         AppEnvironment.limitForPeriod = limitForPeriod;
     }
 
-    @Value("${environment.rate-limit.local.limit-refresh-period:1}")
+    @Value("${environment.rate-limit.local.limit-refresh-period:3}")
     public void setLimitRefreshPeriod(Integer limitRefreshPeriod) {
         AppEnvironment.limitRefreshPeriod = limitRefreshPeriod;
     }

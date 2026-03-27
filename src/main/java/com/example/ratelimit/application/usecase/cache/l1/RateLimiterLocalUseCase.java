@@ -25,8 +25,8 @@ public class RateLimiterLocalUseCase implements RateLimiterLocalService {
 
         Optional<RateLimiter> rateLimiter = repository.findByKey(key);
         if (rateLimiter.isEmpty()) {
-            repository.save(key, RateLimiter.of(key, rateLimiterConfig()));
-            return false;
+            RateLimiter newRateLimiter = repository.save(key, RateLimiter.of(key, rateLimiterConfig()));
+            return newRateLimiter.acquirePermission();
         }
 
         return rateLimiter.get().acquirePermission();

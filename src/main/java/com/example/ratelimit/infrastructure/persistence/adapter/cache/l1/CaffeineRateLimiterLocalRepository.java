@@ -17,8 +17,9 @@ public class CaffeineRateLimiterLocalRepository implements RateLimiterLocalRepos
     Cache<String, RateLimiter> rateLimiterLocalCache;
     
     @Override
-    public void save(String key, RateLimiter rateLimiter) {
+    public RateLimiter save(String key, RateLimiter rateLimiter) {
         rateLimiterLocalCache.put(key, rateLimiter);
+        return rateLimiterLocalCache.get(key, k -> null);
     }
 
     @Override
