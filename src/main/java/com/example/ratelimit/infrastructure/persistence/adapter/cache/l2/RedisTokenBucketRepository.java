@@ -17,8 +17,9 @@ public class RedisTokenBucketRepository implements TokenBucketRepository {
     RedisTemplate<String, TokenBucket> redisTemplate;
 
     @Override
-    public void save(TokenBucket tokenBucket) {
+    public TokenBucket save(TokenBucket tokenBucket) {
         redisTemplate.opsForValue().set(tokenBucket.key(), tokenBucket);
+        return redisTemplate.opsForValue().get(tokenBucket.key());
     }
 
     @Override
@@ -26,7 +27,7 @@ public class RedisTokenBucketRepository implements TokenBucketRepository {
         Optional<TokenBucket> bucket = Optional.ofNullable(redisTemplate.opsForValue().get(key));
         bucket.ifPresent(b -> {
             Double newToken = b.tokens() - minusAmount;
-            redisTemplate.opsForHash().put(key, "tokens", newToken);
+            redisTemplate.opsForValue().set(key, b.withTokens(newToken));
         });
     }
 

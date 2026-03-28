@@ -19,7 +19,7 @@ public class TokenBucketUseCase implements TokenBucketService {
     @Override
     public Boolean allow(String key) {
         TokenBucket tokenBucket = tokenBucketRepository.findByKey(key)
-                .orElse(TokenBucket.ofDefault(key));
+                .orElse(tokenBucketRepository.save(TokenBucket.ofDefault(key)));
         synchronized (tokenBucket) {
             tokenBucket = tokenBucket.refill(System.currentTimeMillis());
             if (tokenBucket.tokens() > 0) {
