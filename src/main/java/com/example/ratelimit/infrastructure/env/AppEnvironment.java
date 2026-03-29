@@ -14,7 +14,7 @@ public class AppEnvironment {
 
     public static Double bucketCapacity;
 
-    @Value("${environment.rate-limit.local.limit-period:1}")
+    @Value("${environment.rate-limit.limit-period:1}")
     public void setLimitForPeriod(Integer limitForPeriod) {
         AppEnvironment.limitForPeriod = limitForPeriod;
     }

@@ -5,3 +5,11 @@ spring:
     redis:
       host: localhost
       port: 6379
+
+environment:
+  rate-limit:
+    limit-period: 5
+    local:
+      limit-refresh-period: 5
+    distributed:
+      bucket-capacity: 5

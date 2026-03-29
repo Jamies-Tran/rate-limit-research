@@ -23,15 +23,11 @@ public record TokenBucket(
 
      public TokenBucket refill(Long now) {
          long delta = now - lastRefillTime;
-         if (delta >= AppEnvironment.limitRefreshPeriod) {
-             double newTokens = (double) (delta * AppEnvironment.limitForPeriod) / 1000;
-             return TokenBucket.builder()
-                     .key(key)
-                     .tokens(Math.min(AppEnvironment.bucketCapacity, newTokens + tokens))
-                     .lastRefillTime(now)
-                     .build();
-         }
-
-         return this;
+         double newTokens = (double) (delta * AppEnvironment.limitForPeriod) / 1000;
+         return TokenBucket.builder()
+                 .key(key)
+                 .tokens(Math.min(AppEnvironment.bucketCapacity, newTokens + tokens))
+                 .lastRefillTime(now)
+                 .build();
      }
 }

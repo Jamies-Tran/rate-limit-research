@@ -1,5 +1,6 @@
-package com.example.ratelimit.presentation.ratelimit;
+package com.example.ratelimit.adapter.inbound.ratelimit;
 
+import com.example.ratelimit.adapter.annotation.RateLimit;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,4 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface RateLimitApi {
     @GetMapping
     ResponseEntity<?> test();
+
+    @GetMapping("/no-limiter")
+    ResponseEntity<?> testWithoutLimiter();
 }
