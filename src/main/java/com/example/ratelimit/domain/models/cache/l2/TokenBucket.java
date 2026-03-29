@@ -1,4 +1,4 @@
-package com.example.ratelimit.domain.entity.cache.l2;
+package com.example.ratelimit.domain.models.cache.l2;
 
 import com.example.ratelimit.infrastructure.env.AppEnvironment;
 import lombok.Builder;

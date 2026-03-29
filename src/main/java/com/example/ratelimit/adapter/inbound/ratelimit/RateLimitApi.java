@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/v1/test")
 public interface RateLimitApi {
     @GetMapping
+    @RateLimit(key = "USER_IP")
     ResponseEntity<?> test();
 
     @GetMapping("/no-limiter")

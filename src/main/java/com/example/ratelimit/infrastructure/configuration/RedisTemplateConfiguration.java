@@ -1,6 +1,6 @@
 package com.example.ratelimit.infrastructure.configuration;
 
-import com.example.ratelimit.domain.entity.cache.l2.TokenBucket;
+import com.example.ratelimit.domain.models.cache.l2.TokenBucket;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;

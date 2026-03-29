@@ -1,4 +1,4 @@
-package com.example.ratelimit.domain.entity.cache.l1;
+package com.example.ratelimit.domain.models.cache.l1;
 
 import com.example.ratelimit.infrastructure.env.AppEnvironment;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;

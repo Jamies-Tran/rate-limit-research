@@ -1,6 +1,6 @@
 package com.example.ratelimit.infrastructure.persistence.adapter.cache.l2;
 
-import com.example.ratelimit.domain.entity.cache.l2.TokenBucket;
+import com.example.ratelimit.domain.models.cache.l2.TokenBucket;
 import com.example.ratelimit.domain.repository.cache.l2.TokenBucketRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

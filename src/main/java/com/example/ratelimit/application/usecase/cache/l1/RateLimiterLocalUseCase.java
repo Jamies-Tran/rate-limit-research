@@ -1,9 +1,8 @@
 package com.example.ratelimit.application.usecase.cache.l1;
 
-import com.example.ratelimit.domain.entity.cache.l1.RateLimiterProperty;
+import com.example.ratelimit.domain.models.cache.l1.RateLimiterProperty;
 import com.example.ratelimit.domain.repository.cache.l1.RateLimiterLocalRepository;
 import com.example.ratelimit.domain.service.cache.l1.RateLimiterLocalService;
-import com.example.ratelimit.infrastructure.env.AppEnvironment;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import lombok.AccessLevel;

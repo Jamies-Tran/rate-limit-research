@@ -1,6 +1,7 @@
 package com.example.ratelimit.infrastructure.aspect;
 
 import com.example.ratelimit.adapter.annotation.RateLimit;
+import com.example.ratelimit.domain.models.enums.ERateLimitKeyType;
 import com.example.ratelimit.domain.service.cache.l1.RateLimiterLocalService;
 import com.example.ratelimit.domain.service.cache.l2.TokenBucketService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ public class RateLimitAspect {
     @Around("@annotation(rateLimit)")
     public Object handle(ProceedingJoinPoint proceedingJoinPoint, RateLimit rateLimit) {
         try {
-            String key = extractKey();
+            String key = extractKey(ERateLimitKeyType.findByCode(rateLimit.key()));
             Boolean checkL1 = rateLimiterLocalService.allow(key);
             if (!checkL1) {
                 return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
@@ -46,7 +47,10 @@ public class RateLimitAspect {
         }
     }
 
-    private String extractKey() {
-        return request.getRemoteAddr();
+    private String extractKey(ERateLimitKeyType rateLimitKeyType) {
+        return switch (rateLimitKeyType) {
+            case USER_IP -> request.getRemoteAddr();
+            case USER_TOKEN -> request.getHeader("Authorization");
+        };
     }
 }
