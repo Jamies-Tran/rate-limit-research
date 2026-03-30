@@ -3,6 +3,7 @@ package com.example.ratelimit.application.usecase.cache.l2;
 import com.example.ratelimit.domain.models.cache.l2.TokenBucket;
 import com.example.ratelimit.domain.repository.cache.l2.TokenBucketRepository;
 import com.example.ratelimit.domain.service.cache.l2.TokenBucketService;
+import com.example.ratelimit.infrastructure.env.AppEnvironment;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,5 +29,20 @@ public class TokenBucketUseCase implements TokenBucketService {
 
             return false;
         }
+    }
+
+    @Override
+    public void updateTokens(String key, Double tokens) {
+        TokenBucket tokenBucket = tokenBucketRepository.findByKey(key)
+                .map(t -> t
+                        .withTokens(tokens)
+                        .withLastRefillTime(System.currentTimeMillis())
+                )
+                .orElse(TokenBucket.builder()
+                        .tokens(tokens)
+                        .refillRate(AppEnvironment.limitForPeriod.doubleValue())
+                        .lastRefillTime(System.currentTimeMillis())
+                        .build());
+        tokenBucketRepository.save(tokenBucket);
     }
 }

@@ -12,6 +12,7 @@ public record TokenBucket(
         @With
         Double tokens,
         Double refillRate,
+        @With
         Long lastRefillTime
 ) {
 

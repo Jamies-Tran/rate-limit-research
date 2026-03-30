@@ -8,16 +8,18 @@ import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RateLimiterLocalUseCase implements RateLimiterLocalService {
     RateLimiterLocalRepository repository;
-
 
     @Override
     public Boolean allow(RateLimiterProperty property) {
@@ -27,8 +29,14 @@ public class RateLimiterLocalUseCase implements RateLimiterLocalService {
             RateLimiter newRateLimiter = repository.save(key, RateLimiter.of(key, rateLimiterConfig(property)));
             return newRateLimiter.acquirePermission();
         }
+        Boolean isPermission = rateLimiter.get().acquirePermission();
 
-        return rateLimiter.get().acquirePermission();
+        return isPermission;
+    }
+
+    @Override
+    public Optional<RateLimiter> findByKey(String key) {
+        return repository.findByKey(key);
     }
 
     private RateLimiterConfig rateLimiterConfig(RateLimiterProperty property) {
