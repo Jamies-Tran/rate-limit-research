@@ -14,6 +14,8 @@ public class AppEnvironment {
 
     public static Double bucketCapacity;
 
+    public static Integer ttl;
+
     @Value("${environment.rate-limit.limit-period:1}")
     public void setLimitForPeriod(Integer limitForPeriod) {
         AppEnvironment.limitForPeriod = limitForPeriod;
@@ -27,5 +29,10 @@ public class AppEnvironment {
     @Value("${environment.rate-limit.distributed.bucket-capacity:5}")
     public void setBucketCapacity(Double bucketCapacity) {
         AppEnvironment.bucketCapacity = bucketCapacity;
+    }
+
+    @Value("${environment.rate-limit.distributed.ttl:10}")
+    public void setTtl(Integer ttl) {
+        AppEnvironment.ttl = ttl;
     }
 }

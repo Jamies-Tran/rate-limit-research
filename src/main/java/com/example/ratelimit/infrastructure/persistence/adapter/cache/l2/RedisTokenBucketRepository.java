@@ -2,6 +2,7 @@ package com.example.ratelimit.infrastructure.persistence.adapter.cache.l2;
 
 import com.example.ratelimit.domain.models.cache.l2.TokenBucket;
 import com.example.ratelimit.domain.repository.cache.l2.TokenBucketRepository;
+import com.example.ratelimit.infrastructure.env.AppEnvironment;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class RedisTokenBucketRepository implements TokenBucketRepository {
 
     @Override
     public TokenBucket save(TokenBucket tokenBucket) {
-        redisTemplate.opsForValue().set(tokenBucket.key(), tokenBucket);
+        redisTemplate.opsForValue().set(tokenBucket.key(), tokenBucket, AppEnvironment.ttl, TimeUnit.SECONDS);
         return redisTemplate.opsForValue().get(tokenBucket.key());
     }
 

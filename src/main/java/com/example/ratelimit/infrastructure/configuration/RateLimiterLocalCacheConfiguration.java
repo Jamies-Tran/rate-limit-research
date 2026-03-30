@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Configuration
@@ -25,7 +26,7 @@ public class RateLimiterLocalCacheConfiguration {
     @Bean
     public Cache<String, RateLimiter> rateLimiterLocalCache() {
         return Caffeine.newBuilder()
-                .expireAfterAccess(Duration.ofMinutes(1))
+                .expireAfterAccess(Duration.ofSeconds(ThreadLocalRandom.current().nextInt(10, 16)))
                 .removalListener((key, value, cause) -> {
                     if (Objects.equals(cause, RemovalCause.EXPIRED)) {
                         RateLimiter rateLimiter = (RateLimiter) value;
