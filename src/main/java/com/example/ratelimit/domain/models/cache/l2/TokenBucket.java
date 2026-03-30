@@ -11,19 +11,13 @@ public record TokenBucket(
         String key,
         @With
         Double tokens,
+        Double refillRate,
         Long lastRefillTime
 ) {
-    public static TokenBucket ofDefault(String key) {
-        return TokenBucket.builder()
-                .key(key)
-                .tokens(AppEnvironment.bucketCapacity)
-                .lastRefillTime(System.currentTimeMillis())
-                .build();
-    }
 
      public TokenBucket refill(Long now) {
          long delta = now - lastRefillTime;
-         double newTokens = (double) (delta * AppEnvironment.limitForPeriod) / 1000;
+         double newTokens = (delta * refillRate) / 1000;
          return TokenBucket.builder()
                  .key(key)
                  .tokens(Math.min(AppEnvironment.bucketCapacity, newTokens + tokens))

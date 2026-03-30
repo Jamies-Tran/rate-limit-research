@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RateLimitController implements RateLimitApi {
 
     @Override
+    @RateLimit(key = "USER_IP")
     public ResponseEntity<?> test() {
         return ResponseEntity.ok().body("Success!");
     }

@@ -8,13 +8,15 @@ import java.time.Duration;
 
 @Builder
 public record RateLimiterProperty(
+        String key,
         Integer limitForPeriod,
         Integer limitRefreshPeriod
 ) {
-    public static RateLimiterProperty ofDefault() {
+    public static RateLimiterProperty ofDefault(RateLimiterProperty property) {
         return RateLimiterProperty.builder()
-                .limitForPeriod(AppEnvironment.limitForPeriod)
-                .limitRefreshPeriod(AppEnvironment.limitRefreshPeriod)
+                .key(property.key())
+                .limitForPeriod(property.limitForPeriod)
+                .limitRefreshPeriod(property.limitForPeriod)
                 .build();
     }
 

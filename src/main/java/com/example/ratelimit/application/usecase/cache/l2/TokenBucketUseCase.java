@@ -15,13 +15,14 @@ public class TokenBucketUseCase implements TokenBucketService {
     TokenBucketRepository tokenBucketRepository;
 
     @Override
-    public Boolean allow(String key) {
-        TokenBucket tokenBucket = tokenBucketRepository.findByKey(key)
-                .orElse(tokenBucketRepository.save(TokenBucket.ofDefault(key)));
-        synchronized (tokenBucket) {
-            tokenBucket = tokenBucket.refill(System.currentTimeMillis());
+    public Boolean allow(TokenBucket tokenBucket) {
+        String key = tokenBucket.key();
+        TokenBucket existedTokenBucket = tokenBucketRepository.findByKey(key)
+                .orElse(tokenBucketRepository.save(tokenBucket));
+        synchronized (existedTokenBucket) {
+            existedTokenBucket = existedTokenBucket.refill(System.currentTimeMillis());
             if (tokenBucket.tokens() > 0) {
-                tokenBucketRepository.minusTokenByKey(tokenBucket.key(), 1);
+                tokenBucketRepository.minusTokenByKey(existedTokenBucket.key(), 1);
                 return true;
             }
 

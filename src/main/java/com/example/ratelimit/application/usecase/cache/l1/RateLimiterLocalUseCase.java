@@ -20,23 +20,18 @@ public class RateLimiterLocalUseCase implements RateLimiterLocalService {
 
 
     @Override
-    public Boolean allow(String key) {
-
+    public Boolean allow(RateLimiterProperty property) {
+        String key = property.key();
         Optional<RateLimiter> rateLimiter = repository.findByKey(key);
         if (rateLimiter.isEmpty()) {
-            RateLimiter newRateLimiter = repository.save(key, RateLimiter.of(key, rateLimiterConfig()));
+            RateLimiter newRateLimiter = repository.save(key, RateLimiter.of(key, rateLimiterConfig(property)));
             return newRateLimiter.acquirePermission();
         }
 
         return rateLimiter.get().acquirePermission();
     }
 
-    @Override
-    public void reset(String key) {
-        repository.save(key, RateLimiter.of(key, rateLimiterConfig()));
-    }
-
-    private RateLimiterConfig rateLimiterConfig() {
-        return RateLimiterProperty.ofDefault().config();
+    private RateLimiterConfig rateLimiterConfig(RateLimiterProperty property) {
+        return RateLimiterProperty.ofDefault(property).config();
     }
 }
